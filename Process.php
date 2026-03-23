@@ -30,6 +30,24 @@ try {
     die("Erreur de connexion PostgreSQL : " . $e->getMessage());
 }
 
+// ... après votre code de connexion $pdo ...
+
+$sql = "CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    reference_id VARCHAR(100) UNIQUE NOT NULL,
+    pawapay_id VARCHAR(100),
+    amount DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) DEFAULT 'PENDING',
+    phone_number VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);";
+
+try {
+    $pdo->exec($sql);
+    // La table sera créée si elle n'existe pas, sinon rien ne se passe.
+} catch (PDOException $e) {
+    die("Erreur lors de l'auto-création de la table : " . $e->getMessage());
+}
 // --- 2. CONFIGURATION PAWAPAY ---
 $PAWAPAY_TOKEN = "eyJraWQiOiIxIiwiYWxnIjoiRVMyNTYifQ.eyJ0dCI6IkFBVCIsInN1YiI6IjE2MTk5IiwibWF2IjoiMSIsImV4cCI6MjA4OTY5OTY3NCwiaWF0IjoxNzc0MDgwNDc0LCJwbSI6IkRBRixQQUYiLCJqdGkiOiI2OTVjZmU5Zi05YWExLTQxNTUtODRjNC0zN2M2MjY1ZTBiNDcifQ.asYDBa_NnVrAtHBubSv5jN3a2y-y0GDBxz3rfDB5TGjUG6rxzwF8WJCJrNALYgPM5TUL-3hCRuFf4EI0cecGYw"; 
 $API_URL = "https://api.sandbox.pawapay.io/v2/deposits";
