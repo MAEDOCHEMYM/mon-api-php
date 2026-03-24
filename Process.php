@@ -1,4 +1,17 @@
 <?php
+
+// Indispensable pour Vercel
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Répondre aux requêtes de "pré-vérification" du navigateur
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+// Le reste de votre code...
+
 // Affichage des erreurs (Utile pour le développement)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
